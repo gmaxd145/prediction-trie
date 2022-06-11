@@ -9,6 +9,24 @@ PredictionTrie::PredictionTrie()
 
 PredictionTrie::~PredictionTrie()
 {
+    clear(_root);
+}
+
+void PredictionTrie::clear(PredictionTrieNode* node)
+{
+    if (node->children.empty())
+    {
+        return;
+    }
+    for (auto& ch: node->children)
+    {
+        clear(ch.second);
+        delete ch.second;
+    }
+}
+
+void PredictionTrie::clear()
+{
     clear(_root->children);
 }
 
@@ -125,6 +143,10 @@ void PredictionTrie::collectAllNodes(const std::unordered_map<char,
         collectAllNodes(node->children, result);
     }
 }
+
+
+
+
 
 
 

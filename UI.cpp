@@ -81,7 +81,7 @@ void UI::browseDictionary()
         return;
     }
 
-    _pt.~PredictionTrie();
+    _pt.clear();
 
     QTextStream in(&file);
     while(!in.atEnd())
