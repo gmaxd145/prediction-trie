@@ -25,7 +25,7 @@ public:
     std::vector<MatchedPair> allWordsStartedWith(const std::string& wordBegin) const;
     std::vector<std::string> findBestMatches(const std::string& wordBegin, unsigned count) const;
 
-    void clear();
+    void deleteWord(const std::string& word);
 
 private:
     struct PredictionTrieNode
@@ -53,7 +53,6 @@ private:
             PredictionTrieNode*>& letterLayer, std::vector<PredictionTrieNode*>& result) const;
 
     void clear(PredictionTrieNode* node);
-    void clear(std::unordered_map<char, PredictionTrieNode*> unorderedMap);
 
     PredictionTrieNode* _root;
 };

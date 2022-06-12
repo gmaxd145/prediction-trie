@@ -25,20 +25,6 @@ void PredictionTrie::clear(PredictionTrieNode* node)
     }
 }
 
-void PredictionTrie::clear()
-{
-    clear(_root->children);
-}
-
-void PredictionTrie::clear(std::unordered_map<char, PredictionTrieNode*> unorderedMap)
-{
-    for (auto& x: unorderedMap)
-    {
-        clear(x.second->children);
-        x.second->children.clear();
-    }
-}
-
 void PredictionTrie::insert(const std::string& word)
 {
     auto* current = _root;
@@ -141,6 +127,36 @@ void PredictionTrie::collectAllNodes(const std::unordered_map<char,
     {
         result.emplace_back(node);
         collectAllNodes(node->children, result);
+    }
+}
+
+void PredictionTrie::deleteWord(const std::string& word)
+{
+    std::string wordCopy = word;
+    for (int i = word.size() - 1; i > -1; --i)
+    {
+        auto* current = find(wordCopy.erase(i + 1, word.size() - 1 - i));
+        if (current == nullptr)
+        {
+            break;
+        }
+        if (i == word.size() - 1)
+        {
+            if (!current->children.empty())
+            {
+                current->type = PredictionTrie::PredictionTrieNode::Type::Regular;
+                current->count = 0;
+                break;
+            }
+            continue;
+        }
+        current->children.erase(word[i + 1]);
+        if (!current->children.empty()
+            ||
+            current->type == PredictionTrie::PredictionTrieNode::Type::Leaf)
+        {
+            break;
+        }
     }
 }
 

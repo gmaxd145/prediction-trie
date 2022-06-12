@@ -22,10 +22,12 @@ private:
     QLineEdit* _inputLine;
     std::array<QLabel*, 5> _predWords;
     QPushButton* _browseBtn;
+    QPushButton* _deleteBtn;
 
     QLineEdit* inputLine();
     QWidget* predWordsWidget();
     QPushButton* browseBtn();
+    QPushButton* deleteBtn();
 
     PredictionTrie  _pt;
 
@@ -33,6 +35,7 @@ private:
 
 private slots:
     void browseDictionary();
+    void deleteWord();
 
     void predictWord(const QString& word);
 };

@@ -1,12 +1,13 @@
 #include "UI.h"
 
-UI::UI(QWidget* parent) : QWidget(parent), _inputLine(new QLineEdit), _browseBtn(new QPushButton)
+UI::UI(QWidget* parent) : QWidget(parent), _inputLine(new QLineEdit), _browseBtn(new QPushButton), _deleteBtn(new QPushButton)
 {
     QVBoxLayout* mainLayout = new QVBoxLayout;
 
     mainLayout->addWidget(inputLine());
     mainLayout->addWidget(predWordsWidget());
     mainLayout->addWidget(browseBtn());
+    mainLayout->addWidget(deleteBtn());
 
     setLayout(mainLayout);
 
@@ -59,6 +60,17 @@ QPushButton *UI::browseBtn()
     return _browseBtn;
 }
 
+QPushButton *UI::deleteBtn()
+{
+    _deleteBtn->hide();
+    _deleteBtn->setText("Delete word");
+    _deleteBtn->setFont(font());
+
+    connect(_deleteBtn,SIGNAL(clicked()), SLOT(deleteWord()));
+
+    return _deleteBtn;
+}
+
 
 QFont UI::font()
 {
@@ -81,8 +93,6 @@ void UI::browseDictionary()
         return;
     }
 
-    _pt.clear();
-
     QTextStream in(&file);
     while(!in.atEnd())
     {
@@ -90,6 +100,18 @@ void UI::browseDictionary()
     }
     _inputLine->setText("");
     _inputLine->setReadOnly(false);
+
+    _browseBtn->hide();
+    _deleteBtn->show();
+}
+
+void UI::deleteWord()
+{
+    if (_inputLine->text().toStdString() == "")
+    {
+        return;
+    }
+    _pt.deleteWord(_inputLine->text().toStdString());
 }
 
 void UI::predictWord(const QString& word) {
@@ -109,3 +131,4 @@ void UI::predictWord(const QString& word) {
         _predWords[i]->setText("");
     }
 }
+
